@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>AI Hand Gesture Recognition Portal</title>
+
+```
+<style>
+
+    body{
+        font-family: Arial, sans-serif;
+        text-align:center;
+        background:#f4f6f9;
+        margin:0;
+        padding:20px;
+    }
+
+    .container{
+        max-width:900px;
+        margin:auto;
+        background:white;
+        padding:20px;
+        border-radius:10px;
+        box-shadow:0 0 10px rgba(0,0,0,0.1);
+    }
+
+    video{
+        border-radius:10px;
+        border:3px solid #ddd;
+    }
+
+    button{
+        padding:10px 20px;
+        margin:5px;
+        border:none;
+        border-radius:5px;
+        cursor:pointer;
+        font-size:16px;
+    }
+
+    .predict-btn{
+        background:#007bff;
+        color:white;
+    }
+
+    .rock{
+        background:#dc3545;
+        color:white;
+    }
+
+    .paper{
+        background:#28a745;
+        color:white;
+    }
+
+    .scissors{
+        background:#ffc107;
+    }
+
+    .auth{
+        margin-bottom:20px;
+    }
+
+    a{
+        text-decoration:none;
+        margin:10px;
+    }
+
+    .result-box{
+        margin-top:20px;
+        padding:15px;
+        background:#f8f9fa;
+        border-radius:8px;
+    }
+
+</style>
+```
+
+</head>
+
+<body>
+
+<div class="container">
+
+```
+<h1>🤖 AI Hand Gesture Recognition Portal</h1>
+
+<div class="auth">
+
+    {% if user.is_authenticated %}
+
+        <h3>Welcome {{ user.username }}</h3>
+
+        <a href="/accounts/logout/">Logout</a>
+        |
+        <a href="/history/">History</a> |
+        <a href="/dashboard/">Dashboard</a> |
+        <a href="/leaderboard/">Leaderboard</a>
+    {% else %}
+
+        <a href="/accounts/login/">Login</a>
+
+    {% endif %}
+
+</div>
+
+<video id="video" width="640" height="480" autoplay></video>
+
+<canvas
+    id="canvas"
+    width="640"
+    height="480"
+    style="display:none;">
+</canvas>
+
+<br><br>
+
+<button class="predict-btn" onclick="predictGesture()">
+    Predict Gesture
+</button>
+
+<hr>
+
+<h2>Play Rock Paper Scissors Using Hand Gestures</h2>
+
+<p>
+✊ Fist = Rock<br>
+✋ Open Palm = Paper<br>
+✌️ Two Fingers = Scissors
+</p>
+
+<div class="result-box">
+
+    <h2 id="result"></h2>
+
+    <h2 id="game-result"></h2>
+
+</div>
+```
+
+</div>
+
+<script>
+
+navigator.mediaDevices.getUserMedia({
+    video: true
+})
+.then(stream => {
+    document.getElementById('video').srcObject = stream;
+});
+
+function predictGesture(){
+
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+
+    const ctx = canvas.getContext('2d');
+
+    ctx.drawImage(video, 0, 0, 640, 480);
+
+    const imageData = canvas.toDataURL('image/jpeg');
+
+    fetch('/predict/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            image: imageData
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+
+        document.getElementById('result').innerHTML = `
+
+            <h3>🎮 Game Result</h3>
+
+            <p>
+                <strong>Your Move:</strong>
+                ${data.prediction}
+            </p>
+
+            <p>
+                <strong>AI Move:</strong>
+                ${data.ai_move || '-'}
+            </p>
+
+            <p>
+                <strong>Result:</strong>
+                ${data.result || '-'}
+            </p>
+
+        `;
+
+    })
+    .catch(error => {
+
+        console.error(error);
+
+        document.getElementById('result').innerHTML =
+            "Error processing gesture.";
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>

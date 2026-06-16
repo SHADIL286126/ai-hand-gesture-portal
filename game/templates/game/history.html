@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Match History</title>
+
+    <style>
+
+        body{
+            font-family:Arial;
+            background:#f4f6f9;
+            padding:20px;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            background:white;
+        }
+
+        th,td{
+            padding:12px;
+            border:1px solid #ddd;
+            text-align:center;
+        }
+
+        th{
+            background:#007bff;
+            color:white;
+        }
+
+        a{
+            text-decoration:none;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<h1>Match History</h1>
+
+<a href="/">← Back Home</a>
+
+<br><br>
+
+<table>
+
+<tr>
+    <th>Date</th>
+    <th>Your Move</th>
+    <th>AI Move</th>
+    <th>Result</th>
+</tr>
+
+{% for match in matches %}
+
+<tr>
+    <td>{{ match.played_at }}</td>
+    <td>{{ match.user_move }}</td>
+    <td>{{ match.ai_move }}</td>
+    <td>{{ match.result }}</td>
+</tr>
+
+{% empty %}
+
+<tr>
+    <td colspan="4">
+        No matches played yet.
+    </td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+</body>
+</html>

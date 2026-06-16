@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leaderboard</title>
+</head>
+<body>
+
+<h1>🏆 Leaderboard</h1>
+
+<a href="/">Home</a>
+
+<table border="1">
+
+<tr>
+    <th>Rank</th>
+    <th>Player</th>
+    <th>Wins</th>
+</tr>
+
+{% for player in players %}
+
+<tr>
+    <td>{{ forloop.counter }}</td>
+    <td>{{ player.username }}</td>
+    <td>{{ player.wins }}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+</body>
+</html>

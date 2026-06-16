@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    background:#f4f6f9;
+    text-align:center;
+}
+
+.card{
+    background:white;
+    width:300px;
+    margin:20px auto;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Player Dashboard</h1>
+
+<a href="/">← Home</a>
+
+<div class="card">
+    <h3>Total Games</h3>
+    <h1>{{ total }}</h1>
+</div>
+
+<div class="card">
+    <h3>Wins</h3>
+    <h1>{{ wins }}</h1>
+</div>
+
+<div class="card">
+    <h3>Losses</h3>
+    <h1>{{ losses }}</h1>
+</div>
+
+<div class="card">
+    <h3>Draws</h3>
+    <h1>{{ draws }}</h1>
+</div>
+
+<div class="card">
+    <h3>Win Rate</h3>
+    <h1>{{ win_rate }}%</h1>
+</div>
+
+</body>
+</html>
